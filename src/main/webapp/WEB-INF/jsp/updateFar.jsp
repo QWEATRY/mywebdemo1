@@ -9,9 +9,10 @@
 </head>
 <body>
 
-<form action="${pageContext.request.contextPath}/favorite/addFar" method="post">
+<form action="${pageContext.request.contextPath}/favorite/updateFar" method="post">
 
     <input type="hidden" name="userId" value="<%=userId%>">
+    <input type="hidden" name="favoriteId" value="${far.favoriteId}">
 
     <div class="form-group">
         <label>名称</label>

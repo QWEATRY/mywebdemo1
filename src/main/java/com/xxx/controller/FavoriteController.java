@@ -56,6 +56,14 @@ public class FavoriteController {
         return mv;
     }
 
+    @RequestMapping("/updateFar")
+    public String updateFar(Favorite favorite)
+    {
+        favoriteService.updateFavorite(favorite);
+        System.out.println(favorite);
+        return "redirect:/favorite/showAllFar";
+    }
+
     @RequestMapping("/deleteFar")
     public String deleteFar(Integer favoriteId)
     {
