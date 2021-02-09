@@ -50,7 +50,6 @@ public class FavoriteController {
     {
         ModelAndView mv=new ModelAndView();
         Favorite favorite=favoriteService.selectFavoriteById(favoriteId);
-        System.out.println("-------------查到far----------");
         mv.addObject("far",favorite);
         mv.setViewName("updateFar");
         return mv;
