@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.dao.FavoriteDao">
+
+    <!--查询操作-->
+    <select id="selectAll" resultType="com.xxx.domain.Favorite">
+        select *
+        from favorite
+    </select>
+
+    <!--    插入操作-->
+    <insert id="insertFavorite">
+        insert
+        into favorite(favoriteName,content,farUrl,userId,createTime)
+        values (#{favoriteName},#{content},#{farUrl},#{userId},#{createTime})
+    </insert>
+
+    <delete id="deleteFavoriteById">
+        delete
+        from favorite
+        where favoriteId=#{favoriteId}
+    </delete>
+
+    <select id="selectFavoriteById" resultType="com.xxx.domain.Favorite">
+        select *
+        from favorite
+        where favoriteId=#{favoriteId}
+    </select>
+
+    <select id="selectFavoriteByName" resultType="com.xxx.domain.Favorite">
+        select *
+        from favorite
+        where favoriteName=#{favoriteName}
+    </select>
+
+    <update id="updateFavorite">
+        update favorite
+        set favoriteName=#{favoriteName},content=#{content},farUrl=#{farUrl},userId=#{userId}
+        where favoriteId=#{favoriteId}
+    </update>
+
+    <select id="selectAllByUserId" resultType="com.xxx.domain.Favorite">
+        select *
+        from favorite
+        where userId=#{userId}
+    </select>
+</mapper>
+
