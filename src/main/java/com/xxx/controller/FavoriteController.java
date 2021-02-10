@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -70,4 +71,15 @@ public class FavoriteController {
         return "redirect:/favorite/showAllFar";
     }
 
+    @RequestMapping("/queryFar")
+    public ModelAndView queryFar(String queryFar)
+    {
+        ModelAndView mv=new ModelAndView();
+        List<Favorite> list=new ArrayList<>();
+        list=favoriteService.queryFavorite(queryFar);
+        if(list==null) mv.addObject("error","查询没有结果");
+        else mv.addObject("list",list);
+        mv.setViewName("showAllFar");
+        return mv;
+    }
 }

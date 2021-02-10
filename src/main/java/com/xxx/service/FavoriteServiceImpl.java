@@ -48,6 +48,16 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteDao.selectAllByUserId(id);
     }
 
+    @Override
+    public int deleteFavoriteByUserId(Integer id) {
+        return favoriteDao.deleteFavoriteByUserId(id);
+    }
+
+    @Override
+    public List<Favorite> queryFavorite(String str) {
+        return favoriteDao.queryFavorite(str);
+    }
+
     public FavoriteDao getFavoriteDao() {
         return favoriteDao;
     }

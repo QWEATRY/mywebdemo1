@@ -17,12 +17,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteUser(String name) {
-        return userDao.deleteUser(name);
+    public int deleteUserById(Integer id) {
+        return userDao.deleteUserById(id);
     }
 
     @Override
     public User selectUserByName(String name) {
         return userDao.selectUserByName(name);
+    }
+
+    @Override
+    public User selectUserById(Integer id) {
+        return userDao.selectUserById(id);
     }
 }

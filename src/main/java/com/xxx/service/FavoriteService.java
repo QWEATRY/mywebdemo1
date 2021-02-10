@@ -20,4 +20,8 @@ public interface FavoriteService {
     int updateFavorite(Favorite favorite);
 
     List<Favorite> selectAllByUserId(Integer id);
+
+    int deleteFavoriteByUserId(Integer id);
+
+    List<Favorite> queryFavorite(String str);
 }

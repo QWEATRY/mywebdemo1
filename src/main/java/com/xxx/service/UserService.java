@@ -6,7 +6,9 @@ public interface UserService {
 
     int insertUser(User user);
 
-    int deleteUser(String name);
+    int deleteUserById(Integer id);
 
     User selectUserByName(String name);
+
+    User selectUserById(Integer id);
 }

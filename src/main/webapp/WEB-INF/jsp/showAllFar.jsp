@@ -1,5 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    Integer userId=(Integer)request.getSession().getAttribute("userId");
+%>
 <html>
 <head>
     <title>Title</title>
@@ -7,6 +10,12 @@
 </head>
 <body>
 <a href="${pageContext.request.contextPath}/favorite/toAddFar">增加收藏</a>
+<a href="${pageContext.request.contextPath}/user/deleteUser?userId=<%=userId%>">注销用户</a>
+<form action="${pageContext.request.contextPath}/favorite/queryFar" method="post" class="form-inline" >
+    <span style="color: red;font-weight: bold">${error}</span>
+    <input type="text" name="queryFar" class="form-control" placeholder="请输入">
+    <input type="submit" value="查询" class="btn btn-primary">
+</form>
 <div class="row clearfix">
     <div class="col-md-12 column">
         <table class="table table-hover table-striped">

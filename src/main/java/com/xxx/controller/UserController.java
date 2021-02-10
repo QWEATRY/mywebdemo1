@@ -2,9 +2,13 @@ package com.xxx.controller;
 
 import com.mysql.cj.Session;
 import com.xxx.domain.User;
+import com.xxx.service.FavoriteService;
 import com.xxx.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,6 +21,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FavoriteService favoriteService;
 
     @RequestMapping("/toLogin")
     public String toLogin()
@@ -72,5 +79,25 @@ public class UserController {
         request.getSession().setAttribute("userId",user.getUserId());
         mv.setViewName("forward:/favorite/showAllFar");
         return mv;
+    }
+
+    @RequestMapping("/deleteUser")
+    @Transactional(
+//          传播行为
+            propagation = Propagation.REQUIRED,
+//          隔离等级
+            isolation = Isolation.DEFAULT,
+//            是否是可读的（用于select）
+            readOnly = false,
+//          抛出什么异常时，进行回滚操作
+            rollbackFor = {NullPointerException.class}
+    )
+    public String deleteUser(Integer userId)
+    {
+        User user=userService.selectUserById(userId);
+        if(user==null) throw new NullPointerException();
+        favoriteService.deleteFavoriteByUserId(userId);
+
+        return "forward:/index.jsp";
     }
 }
