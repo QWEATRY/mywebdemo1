@@ -25,14 +25,16 @@ public class FavoriteController {
         List<Favorite> list=favoriteService.selectAllByUserId(id);
         ModelAndView mv=new ModelAndView();
         mv.addObject("list",list);
+//        mv.setViewName("showAllFar");
         mv.setViewName("showAllFar");
         return mv;
     }
 
     @RequestMapping("/toAddFar")
-    public String toAddFar()
+    public String toAddFar(HttpServletRequest request)
     {
-        return "addFar";
+        request.getSession().setAttribute("function","/favorite/addFar");
+        return "addUpdateFar";
     }
 
     @RequestMapping("/addFar")
@@ -47,12 +49,13 @@ public class FavoriteController {
     }
 
     @RequestMapping("/toUpdateFar")
-    public ModelAndView toUpdateFar(Integer favoriteId)
+    public ModelAndView toUpdateFar(Integer favoriteId,HttpServletRequest request)
     {
         ModelAndView mv=new ModelAndView();
         Favorite favorite=favoriteService.selectFavoriteById(favoriteId);
         mv.addObject("far",favorite);
-        mv.setViewName("updateFar");
+        request.getSession().setAttribute("function","/favorite/updateFar");
+        mv.setViewName("addUpdateFar");
         return mv;
     }
 
@@ -68,7 +71,7 @@ public class FavoriteController {
     public String deleteFar(Integer favoriteId)
     {
         favoriteService.deleteFavoriteById(favoriteId);
-        return "redirect:/favorite/showAllFar";
+        return "forward:/favorite/showAllFar";
     }
 
     @RequestMapping("/queryFar")
@@ -77,9 +80,22 @@ public class FavoriteController {
         ModelAndView mv=new ModelAndView();
         List<Favorite> list=new ArrayList<>();
         list=favoriteService.queryFavorite(queryFar);
-        if(list==null) mv.addObject("error","查询没有结果");
+        System.out.println(queryFar);
+        System.out.println(list);
+        if(list.isEmpty())
+        {
+            mv.addObject("error","查询没有结果");
+            System.out.println("error");
+        }
         else mv.addObject("list",list);
         mv.setViewName("showAllFar");
         return mv;
+    }
+
+    @RequestMapping("toUrl")
+    public String toUrl(String url)
+    {
+        System.out.println(url);
+        return "redirect:"+url;
     }
 }

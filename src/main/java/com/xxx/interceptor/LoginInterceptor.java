@@ -20,7 +20,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         String username=(String)request.getSession().getAttribute("username");
         String password=(String)request.getSession().getAttribute("psw");
 
-        if(username==null||password==null) return false;
+        if(username==null|password==null) return false;
 
         User user=userService.selectUserByName(username);
         String pp=user.getUserPassword();

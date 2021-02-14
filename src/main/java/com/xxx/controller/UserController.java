@@ -26,25 +26,33 @@ public class UserController {
     private FavoriteService favoriteService;
 
     @RequestMapping("/toLogin")
-    public String toLogin()
+    public String toLogin(HttpServletRequest request)
     {
-        return "login";
+        String name= (String) request.getSession().getAttribute("username");
+        String p= (String) request.getSession().getAttribute("psw");
+        if(name!=null&&p!=null) return "showAllFar";
+        else return "login";
     }
 
     @RequestMapping("/login")
     public ModelAndView login(String username, String psw, HttpServletRequest request)
     {
-        request.getSession().setAttribute("username",username);
-        request.getSession().setAttribute("psw",psw);
-
         ModelAndView mv=new ModelAndView();
         String error="用户名或密码不正确";
         User user=userService.selectUserByName(username);
+        if(user==null)
+        {
+            mv.addObject("error",error);
+            mv.setViewName("login");
+            return mv;
+        }
         String password=user.getUserPassword();
         if(password.equals(psw)){
             mv.setViewName("forward:/favorite/showAllFar");
             Integer id=user.getUserId();
             request.getSession().setAttribute("userId",id);
+            request.getSession().setAttribute("username",username);
+            request.getSession().setAttribute("psw",psw);
         }
         else{
             System.out.println("mv.addObject(error,error);");
@@ -64,7 +72,6 @@ public class UserController {
     public ModelAndView addUser(User user,HttpServletRequest request)
     {
         ModelAndView mv=new ModelAndView();
-
         String name=user.getUserName();
         User users=userService.selectUserByName(name);
 
@@ -94,10 +101,19 @@ public class UserController {
     )
     public String deleteUser(Integer userId)
     {
+
         User user=userService.selectUserById(userId);
         if(user==null) throw new NullPointerException();
+        userService.deleteUserById(userId);
         favoriteService.deleteFavoriteByUserId(userId);
 
+        return "forward:/index.jsp";
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request)
+    {
+        request.getSession().invalidate();
         return "forward:/index.jsp";
     }
 }

@@ -12,7 +12,6 @@
         where userName=#{userName}
     </select>
 
-
     <!--    插入操作-->
     <insert id="insertUser">
         insert
@@ -20,10 +19,16 @@
         values(#{userName},#{userPassword})
     </insert>
 
-    <delete id="deleteUser">
+    <delete id="deleteUserById">
         delete
         from user
-        where userName=#{userName}
+        where userId=#{userId}
     </delete>
+
+    <select id="selectUserById" resultType="com.xxx.domain.User">
+        select *
+        from user
+        where userId=#{userId}
+    </select>
 </mapper>
 

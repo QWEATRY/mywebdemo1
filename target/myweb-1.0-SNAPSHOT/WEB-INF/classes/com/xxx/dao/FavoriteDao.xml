@@ -47,5 +47,17 @@
         from favorite
         where userId=#{userId}
     </select>
+
+    <delete id="deleteFavoriteByUserId">
+        delete
+        from favorite
+        where userId=#{userId}
+    </delete>
+
+    <select id="queryFavorite" resultType="com.xxx.domain.Favorite">
+        select *
+        from favorite
+        where favoriteName like "%"#{str}"%" or content like "%"#{str}"%"
+    </select>
 </mapper>
 
