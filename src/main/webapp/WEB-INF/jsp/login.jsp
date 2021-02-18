@@ -69,7 +69,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<div class="col-lg-9 col-lg-offset-3">
 	                      <div class="checkbox">
 	                        <label>
-	                          <input type="checkbox"> Remember me
+	                          <input type="checkbox" name="autoLogin" value="ok"> Remember me
 	                        </label>
 							</div>
 						</div>

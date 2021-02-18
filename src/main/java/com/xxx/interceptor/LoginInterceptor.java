@@ -5,6 +5,7 @@ import com.xxx.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,22 +21,39 @@ public class LoginInterceptor implements HandlerInterceptor {
         String username=(String)request.getSession().getAttribute("username");
         String password=(String)request.getSession().getAttribute("psw");
 
-        if(username==null|password==null) return false;
+        if(username!=null&&password!=null) {
 
-        User user=userService.selectUserByName(username);
-        String pp=user.getUserPassword();
-        Integer id=user.getUserId();
+            User user=userService.selectUserByName(username);
+            String pp=user.getUserPassword();
+            Integer id=user.getUserId();
 
-        if (pp.equals(password)) {
-            request.getSession().setAttribute("userId",id);
-            return true;
+            if (pp.equals(password)) {
+                request.getSession().setAttribute("userId",id);
+                return true;
+            }
         }
 
-        HttpSession session = request.getSession();
-
         // 如果用户已登陆也放行
-        if(session.getAttribute("user") != null) {
-            return true;
+        Cookie[] cookies=request.getCookies();
+        int flag=0;
+        if(cookies!=null){
+            for(Cookie cookie:cookies){
+                String cookieName=cookie.getName();
+                String cookieValue=cookie.getValue();
+                if("username".equals(cookieName)&&!cookieValue.isEmpty()) {
+                    flag++;
+                    request.getSession().setAttribute("username",cookieValue);
+                    User user1=userService.selectUserByName(cookieValue);
+                    Integer userId=user1.getUserId();
+                    request.getSession().setAttribute("userId",userId);
+                }
+                else if("psw".equals(cookieName)&&!cookieValue.isEmpty()) {
+                    flag++;
+                    request.getSession().setAttribute("psw",cookieValue);
+                }
+            }
+            if(flag==2) return true;
+            return false;
         }
 
         // 用户没有登陆跳转到登陆页面

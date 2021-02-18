@@ -56,6 +56,20 @@ Integer userId= (Integer) request.getSession().getAttribute("userId");
 	
 	  <!-- Favicon -->
 	  <link rel="shortcut icon" href="<%=basePath%>assets/img/favicon/favicon.png">
+
+      <script type="text/javascript">
+          function doAjax() {
+              var xmlHttp=new XMLHttpRequest();
+              xmlHttp.onreadystatechange=function () {
+              	if(xmlHttp.readyState==4){
+					alert("添加收藏成功");
+				}
+			  };
+			  xmlHttp.open("get","${pageContext.request.contextPath}/favorite/deleteFar?favoriteId=${fa.favoriteId}",true);
+              xmlHttp.send();
+          }
+      </script>
+
   </head>
   
   <body>
@@ -84,7 +98,8 @@ Integer userId= (Integer) request.getSession().getAttribute("userId");
 	            <!-- Dropdown menu -->
 	            <ul class="dropdown-menu">
 	              <li><a href="${pageContext.request.contextPath}/user/logout"><i class="icon-off"></i> Logout</a></li>
-				  <li><a href="${pageContext.request.contextPath}/user/deleteUser?userId=<%=userId%>"><i class="icon-off"></i> write off</a></li>
+				  <li><a href="${pageContext.request.contextPath}/user/deleteUser?userId=<%=userId%>" onclick="doAjax()"><i class="icon-off"></i> write off</a></li>
+<%--				  <li><a onclick="doAjax()" href="${pageContext.request.contextPath}/index.jsp"><i class="icon-off"></i> write off</a></li>--%>
 	            </ul>
 	          </li>
 	          
@@ -258,7 +273,7 @@ Integer userId= (Integer) request.getSession().getAttribute("userId");
 						  <div class="widget-foot">
 
 							  <form class="col-md-4" role="search" action="${pageContext.request.contextPath}/favorite/queryFar">
-								  <div class="form-group">
+								  <div class="form-group inline" >
 									  <a style="color: red;font-weight: bold">${error}</a>
 									  <input type="text" class="form-control" placeholder="请输入搜索内容" name="queryFar">
 									  <span class="add-on">
