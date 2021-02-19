@@ -15,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
@@ -118,6 +120,23 @@ public class UserController {
         request.getSession().setAttribute("userId",user.getUserId());
         mv.setViewName("forward:/favorite/showAllFar");
         return mv;
+    }
+
+    @RequestMapping("/checkUsername")
+    public void checkUsername(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        String name=request.getParameter("name");
+        User user=userService.selectUserByName(name);
+
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out=response.getWriter();
+
+        System.out.println("得到user"+user+"          "+name);
+
+        if(user==null) {
+            out.print("<font color='green'>用户名可用</font>");
+        }else {
+            out.print("<font color='red'>用户名不可用</font>");
+        }
     }
 
     @RequestMapping("/deleteUser")

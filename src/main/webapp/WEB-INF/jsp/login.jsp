@@ -30,6 +30,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  <!-- Favicon -->
 	  <link rel="shortcut icon" href="<%=basePath%>assets/img/favicons/favicon.ico">
 
+      <script type="text/javascript">
+          function checkUsername(username) {
+              var timeStamp=new Date().getTime();
+              var xhr=new XMLHttpRequest();
+              xhr.onreadystatechange=function () {
+                  if(xhr.readyState==4&&xhr.status==200){
+                      var nameCheckMsg=document.getElementById("nameCheckMsg");
+                      nameCheckMsg.innerHTML=xhr.responseText;
+                  }
+              };
+              xhr.open("get","${pageContext.request.contextPath}/user/checkUsername?_=" + timeStamp + "&name=" + username , true);
+              xhr.send();
+          }
+      </script>
+
   </head>
   
   <body>
@@ -54,14 +69,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                    <div class="form-group">
 	                      <label class="control-label col-lg-3">用户名</label>
 	                      <div class="col-lg-9">
-	                        <input type="text" class="form-control" name="username" placeholder="Username">
+	                        <input type="text" class="form-control" name="username" placeholder="Username" id="username" onblur="checkUsername(this.value)">
+                              <span id="nameCheckMsg" style="font-size: 12px"></span>
 	                      </div>
 	                    </div>
 	                    <!-- Password -->
 	                    <div class="form-group">
 	                      <label class="control-label col-lg-3">密码</label>
 	                      <div class="col-lg-9">
-	                        <input type="password" class="form-control" name="psw" placeholder="Password">
+	                        <input type="password" class="form-control" name="psw" placeholder="Password" id="psw">
 	                      </div>
 	                    </div>
 	                    <!-- Remember me checkbox and sign in button -->
@@ -95,9 +111,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    </div>
 	  </div> 
 	</div>
-		
-			
-	
+
 	<!-- JS -->
 	<script src="<%=basePath%>assets/js/jquery.js"></script>
 	<script src="<%=basePath%>assets/js/bootstrap.js"></script>

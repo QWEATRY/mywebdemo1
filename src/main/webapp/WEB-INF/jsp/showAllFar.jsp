@@ -58,14 +58,14 @@ Integer userId= (Integer) request.getSession().getAttribute("userId");
 	  <link rel="shortcut icon" href="<%=basePath%>assets/img/favicon/favicon.png">
 
       <script type="text/javascript">
-          function doAjax() {
+          function checkUsername() {
               var xmlHttp=new XMLHttpRequest();
               xmlHttp.onreadystatechange=function () {
-              	if(xmlHttp.readyState==4){
-					alert("添加收藏成功");
+              	if(xmlHttp.readyState==4&&xmlHttp.status==200){
+					alert("删除成功");
 				}
 			  };
-			  xmlHttp.open("get","${pageContext.request.contextPath}/favorite/deleteFar?favoriteId=${fa.favoriteId}",true);
+			  xmlHttp.open("get","${pageContext.request.contextPath}/favorite/deleteFar?favoriteId="+favoriteId,true);
               xmlHttp.send();
           }
       </script>
@@ -309,6 +309,8 @@ Integer userId= (Integer) request.getSession().getAttribute("userId");
 										  <a href="${pageContext.request.contextPath}/favorite/toUpdateFar?favoriteId=${fa.favoriteId}">修改</a>
 										  &nbsp; | &nbsp;
 										  <a href="${pageContext.request.contextPath}/favorite/deleteFar?favoriteId=${fa.favoriteId}">删除</a>
+<%--										  <a onclick="doA(${fa.favoriteId})">删除</a>--%>
+<%--										  <button onclick="doA(${fa.favoriteId})">删除</button>--%>
 									  </td>
 								  </tr>
 							  </c:forEach>
